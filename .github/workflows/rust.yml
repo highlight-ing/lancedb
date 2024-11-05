@@ -52,6 +52,15 @@ jobs:
           $env:LIB = ""
           Add-Content $env:GITHUB_ENV "LIB=C:\Program Files (x86)\Windows Kits\10\Lib\10.0.22621.0\um\arm64;C:\Program Files (x86)\Windows Kits\10\Lib\10.0.22621.0\ucrt\arm64"
         shell: powershell
+      - name: Install Python
+        run: |
+          Invoke-WebRequest -Uri "https://www.python.org/ftp/python/3.11.8/python-3.11.8-arm64.exe" -OutFile "python-installer.exe"
+          Start-Process -FilePath "python-installer.exe" -ArgumentList "/quiet", "InstallAllUsers=1", "PrependPath=1" -Wait
+          # Refresh PATH to include Python
+          $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+          # Verify Python installation
+          python --version
+        shell: powershell
       - name: Install Rust
         run: |
           Invoke-WebRequest https://win.rustup.rs/x86_64 -OutFile rustup-init.exe
