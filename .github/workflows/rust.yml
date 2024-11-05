@@ -36,6 +36,13 @@ jobs:
             "--add", "Microsoft.VisualStudio.Component.VC.Tools.ARM64", `
             "--add", "Microsoft.VisualStudio.Component.VC.Tools.x86.x64" -Wait
         shell: powershell
+      - name: Add Visual Studio Build Tools to PATH
+        run: |
+          $vsPath = "C:\BuildTools\VC\Tools\MSVC"
+          $latestVersion = (Get-ChildItem $vsPath | Sort-Object {[version]$_.Name} -Descending)[0].Name
+          Add-Content $env:GITHUB_PATH "C:\BuildTools\VC\Tools\MSVC\$latestVersion\bin\Hostx64\arm64"
+          Add-Content $env:GITHUB_PATH "C:\BuildTools\VC\Tools\MSVC\$latestVersion\bin\Hostx64\x64"
+        shell: powershell
       - name: Install Rust
         run: |
           Invoke-WebRequest https://win.rustup.rs/x86_64 -OutFile rustup-init.exe
