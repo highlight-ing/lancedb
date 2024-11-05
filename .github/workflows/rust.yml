@@ -60,6 +60,10 @@ jobs:
           $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
           # Verify Python installation
           python --version
+          # Set PYO3_PYTHON env var explicitly
+          Add-Content $env:GITHUB_ENV "PYO3_PYTHON=C:\Program Files\Python311\python.exe"
+          Add-Content $env:GITHUB_PATH "C:\Program Files\Python311"
+          Add-Content $env:GITHUB_PATH "C:\Program Files\Python311\Scripts"
         shell: powershell
       - name: Install Rust
         run: |
