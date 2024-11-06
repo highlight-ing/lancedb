@@ -27,9 +27,10 @@ jobs:
   windows-arm64:
     runs-on: windows-arm64
     steps:
+      - name: core.symlinks
+        run: |
+          git config --global core.symlinks true
       - uses: actions/checkout@v4
-        with:
-          submodules: recursive
       - uses: actions/setup-python@v5
         with:
           python-version: "3.13"
