@@ -40,7 +40,8 @@ jobs:
             "--add", "Microsoft.VisualStudio.Component.VC.Tools.x86.x64", `
             "--add", "Microsoft.VisualStudio.Component.Windows11SDK.22621", `
             "--add", "Microsoft.VisualStudio.Component.VC.ATL", `
-            "--add", "Microsoft.VisualStudio.Component.VC.ATLMFC" -Wait
+            "--add", "Microsoft.VisualStudio.Component.VC.ATLMFC", `
+            "--add", "Microsoft.VisualStudio.Component.VC.Llvm.Clang" -Wait
         shell: powershell
       - name: Add Visual Studio Build Tools to PATH
         run: |
@@ -50,6 +51,8 @@ jobs:
           Add-Content $env:GITHUB_PATH "C:\BuildTools\VC\Tools\MSVC\$latestVersion\bin\Hostx64\x64"
           Add-Content $env:GITHUB_PATH "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\arm64"
           Add-Content $env:GITHUB_PATH "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64"
+          # Add Clang to PATH
+          Add-Content $env:GITHUB_PATH "C:\BuildTools\VC\Tools\Llvm\x64\bin"
 
           # Create LIB environment variable if it doesn't exist
           $env:LIB = ""
