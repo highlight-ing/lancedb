@@ -27,7 +27,15 @@ jobs:
   windows-arm64:
     runs-on: windows-arm64
     steps:
-      - name: core.symlinks
+      - name: Install Git
+        run: |
+          Invoke-WebRequest -Uri "https://github.com/git-for-windows/git/releases/download/v2.44.0.windows.1/Git-2.44.0-64-bit.exe" -OutFile "git-installer.exe"
+          Start-Process -FilePath "git-installer.exe" -ArgumentList "/VERYSILENT", "/NORESTART" -Wait
+          Add-Content $env:GITHUB_PATH "C:\Program Files\Git\bin"
+          # Refresh PATH
+          $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+        shell: powershell
+      - name: Configure Git symlinks
         run: |
           git config --global core.symlinks true
       - uses: actions/checkout@v4
